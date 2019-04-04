@@ -379,6 +379,10 @@ module.exports = function(webpackEnv) {
                 // debugger to show the original code. Instead, the code
                 // being evaluated would be much more helpful.
                 sourceMaps: false,
+                // plugins: [
+                //   //antd按需加载,移动端添加 "libraryName": "antd-mobile"
+                //   [require.resolve('babel-plugin-import'), { libraryName: 'antd', style: 'css' }],
+                // ],
               },
             },
             // "postcss" loader applies autoprefixer to our CSS.
