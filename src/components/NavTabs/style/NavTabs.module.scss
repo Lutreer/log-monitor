@@ -1,0 +1,74 @@
+.affix::-webkit-scrollbar {
+    height: 6px;
+    background-color: #fff;
+}
+
+.affix::-webkit-scrollbar-track {
+    border-radius: 3px;
+}
+
+.affix::-webkit-scrollbar-thumb {
+    background: #eee;
+    border-radius: 7px;
+}
+
+
+.affix{
+
+    padding: 5px 15px 8px 15px;
+    display: flex;
+    width: 100%;
+    background-color: #ffffff;
+    box-shadow: 6px 3px 3px -2px #e4e4e4;
+    overflow-x: auto;
+
+    
+    
+
+    .nav_item_active{
+        background-color: #f0f2f5 !important;
+    }
+    .nav_item{
+        background-color: #fff;
+        display: flex;
+        align-items: center;
+        box-shadow: -1px 2px 3px #ccc;
+        padding: 2px 4px;
+        margin-right: 2px;
+        cursor: default;
+        // overflow: hidden;
+
+        border-radius: 4px;
+        min-width: 65px;
+        max-width: 160px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        &:hover{
+            color: #121212;
+        }
+
+        span{
+            margin-left: 4px;
+            word-break:keep-all;/* 不换行 */ 
+            white-space:nowrap;/* 不换行 */
+            overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */
+            text-overflow:ellipsis;/* 省略标记(...) ；需与overflow:hidden;一起使用。*/
+        }
+        i.close{
+            font-size: 12px;
+            float: right;
+            z-index: 10;
+            margin-left: 4px;
+            border-radius: 50%;
+            padding: 1px;
+            color: #ddd;
+
+            &:hover{
+                color: #aaa;
+                background-color: #f3f4f5;
+            }
+        }
+
+    }
+}

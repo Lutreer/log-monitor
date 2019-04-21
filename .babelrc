@@ -1,6 +1,7 @@
 {
   "presets": ["react-app"],
   "plugins": [
+
     ["import", { "libraryName": "antd", "style": "css"}]
     // antd按需加载,移动端添加 "libraryName": "antd-mobile"
   ]

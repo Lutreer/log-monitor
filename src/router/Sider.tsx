@@ -1,24 +1,18 @@
-import React, { Component } from 'react';
+import React, { Component, memo } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
-import { sider } from './router';
+import { sider, MenuInterface, RouteInterface, isRoute } from './router';
 
-interface RouterMenu {
-  name:string,
-  path: string,
-  component: React.ComponentType,
-  icon:string,
-  exact:boolean,
-  default:boolean
-}
+
 export default class Sider extends Component {
-  render() {
+  private generateRoute():Array<JSX.Element>{
     let routeDom: Array<JSX.Element> = [];
-    sider.forEach((menus, index_1) => {
-      menus.routes.forEach((route:RouterMenu, index_2:number) => {
+    sider.forEach((el:MenuInterface | RouteInterface, index_1) => {
+      if(isRoute(el)){
+        let route:RouteInterface = el;
         routeDom.push(
           <Route
-            key={index_1 + '-' + index_2}
+            key={index_1}
             path={route.path}
             exact={route.exact}
             component={route.component}
@@ -26,12 +20,33 @@ export default class Sider extends Component {
         );
         if (route.default) {
           routeDom.push(
-              <Redirect key={index_1 + '-' + index_2} to={route.path}/>
+              <Redirect key={index_1} to={route.path}/>
           )
         }
-      });
+        
+      }else{
+        let menu:MenuInterface = el;
+        menu.routes.forEach((route:RouteInterface, index_2:number) => {
+          routeDom.push(
+            <Route
+              key={index_1 + '-' + index_2}
+              path={route.path}
+              exact={route.exact}
+              component={route.component}
+            />
+          );
+          if (route.default) {
+            routeDom.push(
+                <Redirect key={index_1 + '-' + index_2} to={route.path}/>
+            )
+          }
+        });
+      }
     });
-
+    return routeDom
+  }
+  render() {
+    let routeDom = this.generateRoute()
     return <Switch>{routeDom}</Switch>;
   }
 }

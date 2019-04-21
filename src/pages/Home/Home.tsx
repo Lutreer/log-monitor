@@ -3,73 +3,53 @@ import React, { Component } from 'react';
 import style from './style/Home.module.scss';
 import SiderRouter from '../../router/Sider';
 
-import { Layout, Menu, Icon } from 'antd';
+
+
+import { sider } from '../../router/router';
+
+import { Layout, Menu, Icon, Breadcrumb, Dropdown } from 'antd';
 const { Header, Content, Footer, Sider } = Layout;
 
 const SubMenu = Menu.SubMenu;
-export default class Home extends Component {
+
+import SiderMenu from '../../components/SiderMenu/SiderMenu';
+import NavTabs from '../../components/NavTabs/NavTabs';
+import GlobalHeader from '../../components/GlobalHeader/GlobalHeader';
+interface HomePropsInterface {
+  
+}
+export default class Home extends Component<HomePropsInterface,any> {
+  public state:any;
+  constructor(props:HomePropsInterface) {
+    super(props);
+    this.state = {
+      siderMenuIsCollapsed:false
+    }
+  }
+
+  siderMenuToggleCollapsed(isCollapsed:boolean){
+    this.setState({
+      siderMenuIsCollapsed:isCollapsed
+    })
+  }
+
+
   render() {
+    
     return (
-      <Layout>
-        <Sider
-          style={{
-            overflow: 'auto',
-            height: '100vh',
-            position: 'fixed',
-            left: 0,
-          }}
-        >
-          <div className={style.logo}>WA</div>
-          <Menu theme="dark" mode="inline" defaultSelectedKeys={['4']}>
-            <Menu.Item key="1">
-              <Icon type="user" />
-              <span className="nav-text">nav 1</span>
-            </Menu.Item>
-            <SubMenu
-              key="sub1"
-              title={
-                <span>
-                  <Icon type="user" />
-                  <span>User</span>
-                </span>
-              }
-            >
-              <Menu.Item key="3">Tom</Menu.Item>
-              <Menu.Item key="4">Bill</Menu.Item>
-              <Menu.Item key="5">Alex</Menu.Item>
-            </SubMenu>
-            <Menu.Item key="3">
-              <Icon type="upload" />
-              <span className="nav-text">nav 3</span>
-            </Menu.Item>
-            <Menu.Item key="4">
-              <Icon type="bar-chart" />
-              <span className="nav-text">nav 4</span>
-            </Menu.Item>
-            <Menu.Item key="5">
-              <Icon type="cloud-o" />
-              <span className="nav-text">nav 5</span>
-            </Menu.Item>
-            <Menu.Item key="6">
-              <Icon type="appstore-o" />
-              <span className="nav-text">nav 6</span>
-            </Menu.Item>
-            <Menu.Item key="7">
-              <Icon type="team" />
-              <span className="nav-text">nav 7</span>
-            </Menu.Item>
-            <Menu.Item key="8">
-              <Icon type="shop" />
-              <span className="nav-text">nav 8</span>
-            </Menu.Item>
-          </Menu>
-        </Sider>
-        <Layout style={{ marginLeft: 200 }}>
-          <Header style={{ background: '#fff', padding: 0 }} />
-          <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
-            <SiderRouter/>
+      <Layout style={{ minHeight: '100vh' }}>
+        <SiderMenu menus={sider} title="WM" toggleCollapsed={this.siderMenuToggleCollapsed.bind(this)}/>
+        <Layout style={this.state.siderMenuIsCollapsed ? { marginLeft: 80 } : {marginLeft: 200}}>
+          <Header style={{ background: '#fff', padding: 0,height:48, borderBottom: '1px solid #f0f2f5'}}>
+          <GlobalHeader></GlobalHeader>
+          </Header>
+          <NavTabs></NavTabs>
+          <Content style={{ margin: '4px 16px 0', overflow: 'initial' }}>
+            <div style={{ padding: 24, background: '#fff', textAlign: 'center' }}>
+              <SiderRouter />
+            </div>
           </Content>
-          <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
+          <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Leasong</Footer>
         </Layout>
       </Layout>
     );

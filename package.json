@@ -120,6 +120,7 @@
     ]
   },
   "devDependencies": {
+    "@ant-design/icons": "^1.1.16",
     "babel-plugin-import": "^1.11.0",
     "node-sass": "^4.11.0",
     "react-router-dom": "^5.0.0"
