@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PureComponent } from 'react';
 import style from './style/SiderMenu.module.scss';
 
 import { MenuInterface, RouteInterface, isRoute } from '../../router/router';
@@ -11,11 +11,11 @@ interface SiderPropsInterface {
   title: string;
   menus: Array<MenuInterface | RouteInterface>;
   toggleCollapsed: Function;
+  inlineCollapsed: boolean;
 }
 interface SiderStateInterface {
   defaultSelectedKeys: Array<string>;
   defaultOpenKeys: Array<string>;
-  inlineCollapsed: boolean;
 }
 export default class SiderMenu extends Component<SiderPropsInterface, SiderStateInterface> {
   public state: SiderStateInterface;
@@ -31,7 +31,6 @@ export default class SiderMenu extends Component<SiderPropsInterface, SiderState
     this.state = {
       defaultSelectedKeys: [],
       defaultOpenKeys: [],
-      inlineCollapsed: false,
     };
     this.setDefaultSelectedAndOpenKeys(this.props.menus);
   }
@@ -52,20 +51,15 @@ export default class SiderMenu extends Component<SiderPropsInterface, SiderState
     });
   }
   private toggleCollapsed() {
-    this.setState({
-      inlineCollapsed: !this.state.inlineCollapsed,
-    },() => {
-      // 如果 setState 之后立即使用该值，会取不到新值，可以在回调中获取
-      this.props.toggleCollapsed(this.state.inlineCollapsed)
-    });
-    
+    debugger
+    this.props.toggleCollapsed()
   };
 
   render(): JSX.Element {
     return (
       <Sider
         collapsible
-        collapsed={this.state.inlineCollapsed}
+        collapsed={this.props.inlineCollapsed}
         onCollapse={this.toggleCollapsed.bind(this)}
         className={style.sider}
       >
@@ -76,7 +70,7 @@ export default class SiderMenu extends Component<SiderPropsInterface, SiderState
           defaultSelectedKeys={this.state.defaultSelectedKeys}
           defaultOpenKeys={this.state.defaultOpenKeys}
           style={{ textAlign: 'left' }}
-          inlineCollapsed={this.state.inlineCollapsed}
+          inlineCollapsed={this.props.inlineCollapsed}
         >
           {this.props.menus.map((el, index) => {
             return isRoute(el) ? (

@@ -1,24 +1,16 @@
 import React, { Component } from 'react'
 import {Affix, Icon, Tooltip, Avatar} from 'antd'
 import style from './style/NavTabs.module.scss'
- function log(target:any, name:any, descriptor:any){
-    const method = descriptor.value
-    descriptor.value = function(...args:any){ 
-        console.log(`Calling ${name} with`, arguments);
-        method.apply(this, args) 
-      }
-    return descriptor
-  }
+interface PropsInterface {
+  tabs:Array<any>
+}
 
 
-export default class NavTabs extends Component {
-    @log
-    aa(){
-        console.log(11111111)
-    }
+export default class NavTabs extends Component<PropsInterface, any> {
+   
 
   render() {
-      this.aa()
+    let {tabs} = this.props
     return (
         <Affix offsetTop={0}>
             <div className={style.affix}>

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
+import { createStore } from 'redux'
 
 import { index } from './router';
 export default class Index extends Component {
