@@ -15,8 +15,8 @@ import GlobalHeader from '../../components/GlobalHeader/GlobalHeader';
 import { connect } from 'react-redux';
 
 import { bindActionCreators, Dispatch } from 'redux';
-import action from './model/gameAction';
-import { GameInterface } from './model/gameType';
+import action from './model/game.action';
+import { GameInterface } from './model/game.type';
 
 export interface GameStateInterface {
   gameList: Array<GameInterface>

@@ -8,22 +8,21 @@ import { sider } from '../../router/router';
 import { Layout, Menu, Icon, Breadcrumb, Dropdown } from 'antd';
 const { Header, Content, Footer, Sider } = Layout;
 
-
 import SiderMenu from '../../components/SiderMenu/SiderMenu';
 import NavTabs from '../../components/NavTabs/NavTabs';
 import GlobalHeader from '../../components/GlobalHeader/GlobalHeader';
 import { connect } from 'react-redux';
 
 import { bindActionCreators, Dispatch } from 'redux';
-import action from './model/homeAction';
+import action from './model/home.action';
 
 interface HomePropsInterface extends HomeStateInterface {
-  showSideMenu:Function
+  showSideMenu: Function;
 }
 
 export interface HomeStateInterface {
-  siderMenuCollapsed:boolean,
-  navTabs:Array<any>
+  siderMenuCollapsed: boolean;
+  navTabs: Array<any>;
 }
 
 class Home extends Component<HomePropsInterface, HomeStateInterface> {
@@ -33,13 +32,10 @@ class Home extends Component<HomePropsInterface, HomeStateInterface> {
   }
 
   siderMenuToggleCollapsed(isCollapsed: boolean) {
-    this.props.showSideMenu()
+    this.props.showSideMenu();
   }
   render() {
-    const {
-      siderMenuCollapsed,
-      navTabs
-    } = this.props
+    const { siderMenuCollapsed, navTabs } = this.props;
     return (
       <Layout style={{ minHeight: '100vh' }}>
         <SiderMenu
@@ -59,30 +55,32 @@ class Home extends Component<HomePropsInterface, HomeStateInterface> {
           >
             <GlobalHeader />
           </Header>
-          <NavTabs tabs={navTabs}/>
+          <NavTabs tabs={navTabs} />
           <Content style={{ margin: '4px 16px 0', overflow: 'initial' }}>
             <div style={{ padding: 24, background: '#fff', textAlign: 'center' }}>
               <SiderRouter />
             </div>
           </Content>
-          <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Leasong{siderMenuCollapsed}</Footer>
+          <Footer style={{ textAlign: 'center' }}>
+            Ant Design ©2018 Created by Leasong{siderMenuCollapsed}
+          </Footer>
         </Layout>
       </Layout>
     );
   }
 }
 
-const mapStateToProps = ({home}:{[key:string]:HomeStateInterface}) => {
-  return {
-    siderMenuCollapsed: home.siderMenuCollapsed,
-    navTabs: home.navTabs
-  }
-}
+const mapStateToProps = ({ home }: { [key: string]: HomeStateInterface }) => ({
+  siderMenuCollapsed: home.siderMenuCollapsed,
+  navTabs: home.navTabs,
+});
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  showSideMenu:  bindActionCreators(action.sideMenuShowe, dispatch),
-  addNavTab:  bindActionCreators(action.addNavTab, dispatch)
-})
+  showSideMenu: bindActionCreators(action.sideMenuShowe, dispatch),
+  addNavTab: bindActionCreators(action.addNavTab, dispatch),
+});
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home)
-
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Home);

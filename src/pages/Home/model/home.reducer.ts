@@ -1,5 +1,5 @@
 import { HomeStateInterface } from "../Home";
-import { ActionType } from "./homeType";
+import { ActionType } from "./home.type";
 let initState:HomeStateInterface = {
   siderMenuCollapsed:false,
   navTabs:[]

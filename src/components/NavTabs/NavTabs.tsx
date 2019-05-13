@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {Affix, Icon, Tooltip, Avatar} from 'antd'
-import style from './style/NavTabs.module.scss'
+import style from './style/navTabs.module.scss'
 interface PropsInterface {
   tabs:Array<any>
 }

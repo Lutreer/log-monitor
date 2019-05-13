@@ -121,6 +121,7 @@
   },
   "devDependencies": {
     "@ant-design/icons": "^1.1.16",
+    "@babel/plugin-proposal-decorators": "^7.4.4",
     "@types/react-redux": "^7.0.8",
     "@types/redux-logger": "^3.0.7",
     "axios": "^0.18.0",

@@ -3,6 +3,7 @@ import Home from '../pages/Home/Home';
 
 import FormatIgeData from '../pages/Tool/FormatIgeData';
 import Analysis from '../pages/Dashboard/Analysis';
+import Game from '../pages/Game/Game';
 export interface MenuInterface {
   name: string;
   path: string;
@@ -16,6 +17,8 @@ export interface RouteInterface {
   icon: string;
   exact: boolean;
   default: boolean;
+  authRoles?:Array<string>;
+  authLogin?:boolean;
 }
 
 export function isRoute(route:RouteInterface | MenuInterface):route is RouteInterface{
@@ -31,14 +34,16 @@ export const index:Array<RouteInterface> = [
     exact: true,
     icon: '',
     default: false,
+    authLogin:false
   },
   {
-    name: '',
+    name: 'Home',
     path: '/',
     component: Home,
     icon: '',
     exact: false,
-    default: false,
+    default: true,
+    authLogin:true
   },
 ];
 export const sider: Array<MenuInterface | RouteInterface> = [
@@ -53,18 +58,25 @@ export const sider: Array<MenuInterface | RouteInterface> = [
         component: Analysis,
         icon: 'fund',
         exact: true,
+        default: false,
+      },
+    ],
+  },
+  {
+    name: 'Game',
+    path: '/game',
+    icon: 'tool',
+    routes: [
+      {
+        name: 'Game List',
+        path: '/game/list',
+        component: Game,
+        icon: 'fund',
+        exact: true,
         default: true,
       },
     ],
   },
-  // {
-  //   name: 'AAAAAA',
-  //   path: '/AAAAA/AAAAA',
-  //   component: Analysis,
-  //   icon: '',
-  //   exact: true,
-  //   default: false,
-  // },
   {
     name: 'Tool',
     path: '/tool',

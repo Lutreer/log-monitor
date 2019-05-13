@@ -1,0 +1,17 @@
+.login{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 25vh;
+
+    .form{
+        min-width: 300px;
+        max-width: 450px;
+    }
+
+    .loginButton{
+        width:100%;
+    }
+}

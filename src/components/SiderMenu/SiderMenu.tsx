@@ -1,5 +1,5 @@
 import React, { Component, PureComponent } from 'react';
-import style from './style/SiderMenu.module.scss';
+import style from './style/siderMenu.module.scss';
 
 import { MenuInterface, RouteInterface, isRoute } from '../../router/router';
 
@@ -20,7 +20,7 @@ interface SiderStateInterface {
 export default class SiderMenu extends Component<SiderPropsInterface, SiderStateInterface> {
   public state: SiderStateInterface;
 
-  // 改成员为组件props设置默认值
+  // 该成员为组件props设置默认值
   public static defaultProps: Partial<SiderPropsInterface> = {
     title: '',
     menus: [],
@@ -51,11 +51,11 @@ export default class SiderMenu extends Component<SiderPropsInterface, SiderState
     });
   }
   private toggleCollapsed() {
-    debugger
     this.props.toggleCollapsed()
   };
 
   render(): JSX.Element {
+    this
     return (
       <Sider
         collapsible

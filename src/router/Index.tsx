@@ -1,22 +1,46 @@
 import React, { Component } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
-import { createStore } from 'redux'
+import { createStore, Dispatch } from 'redux';
 
+import Login from '../pages/User/Login';
 import { index } from './router';
-export default class Index extends Component {
+import { connect } from 'react-redux';
+
+interface PropsInterface {
+  user: any;
+}
+class Index extends Component<PropsInterface> {
   render() {
+    let { user } = this.props;
+    let isLogin = false;
     let routeDom: Array<JSX.Element> = [];
+
     index.forEach((route, index) => {
-      routeDom.push(
+      let rou = route.authLogin ? (
+        <Route
+          key={index}
+          path={route.path}
+          exact={route.exact}
+          render={() => <Redirect key="login" to="/login" />}
+        />
+      ) : (
         <Route key={index} path={route.path} exact={route.exact} component={route.component} />
       );
+      routeDom.push(rou);
 
       if (route.default) {
-        routeDom.push(
-            <Redirect key={index} to={route.path} />
-        )
+        routeDom.push(<Redirect key={index} to={route.path} />);
       }
     });
     return <Switch>{routeDom}</Switch>;
   }
 }
+let mapStateToProps = (state: any) => ({
+  user: state.user,
+});
+
+// export default connect(mapStateToProps,mapDispathToProps)(Index)
+export default connect(
+  mapStateToProps,
+  null
+)(Index);
