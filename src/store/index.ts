@@ -27,7 +27,7 @@ let configureStore = storyFactory(reducers)
 
 
 // 运行saga
-// sagaMiddleware.run(sagas)
+sagaMiddleware.run(sagas)
 
 export default configureStore
 

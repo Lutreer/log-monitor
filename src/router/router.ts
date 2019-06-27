@@ -73,7 +73,7 @@ export const sider: Array<MenuInterface | RouteInterface> = [
         component: Game,
         icon: 'fund',
         exact: true,
-        default: true,
+        default: false,
       },
     ],
   },

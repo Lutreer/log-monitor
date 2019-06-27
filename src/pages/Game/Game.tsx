@@ -26,9 +26,10 @@ interface GamePropsInterface extends GameStateInterface {
 }
 
 class Game extends Component<GamePropsInterface, GameStateInterface> {
-  public state: any;
-  constructor(props: GamePropsInterface) {
+  state: GameStateInterface;
+  constructor(props: GamePropsInterface,state:GameStateInterface) {
     super(props);
+    this.state = state
   }
 
   render() {

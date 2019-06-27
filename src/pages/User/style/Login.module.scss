@@ -5,10 +5,16 @@
     align-items: center;
     justify-content: center;
     padding-bottom: 25vh;
-
+    .title{
+        text-align: center;
+    }
     .form{
         min-width: 300px;
         max-width: 450px;
+
+        .errorAlert{
+            margin-bottom: 25px;
+        }
     }
 
     .loginButton{

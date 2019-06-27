@@ -1,19 +1,30 @@
-import { UserInfoStateInterface } from "../Login";
-import { ActionType, LOGIN, LOGIN_SUCCESS,UserInterface } from "./user.type";
+import { ActionType, LOGIN, LOGIN_SUCCESS, IUserStore, LOGIN_FAIL } from "./user.type";
+import CONST from "../../../assets/js/CONST";
+import history from "../../../assets/js/handler/history";
 
-let initState: UserInfoStateInterface = {
+let initState: IUserStore = {
   userInfo:{
     id: '',
     avator: '',
-    username: '',
-    password: ''
+    userName: '',
+    token:"",
+    vmaToken:''
   },
-  isLogining:false
+  isLogining:false,
+  loginErrMsg:''
+
+ 
 };
-export default function userReducer(state: UserInfoStateInterface = initState, action: ActionType):UserInfoStateInterface {
+export default function userReducer(state: IUserStore = initState, action: ActionType):IUserStore {
   switch (action.type) {
+    case LOGIN:
+      return {...state,isLogining:true,loginErrMsg:''};
     case LOGIN_SUCCESS:
-      return {...state,...action.payload};
+      localStorage.setItem(CONST.TOKEN,action.payload.token)
+      localStorage.setItem(CONST.LOCALSTORAGE_USER_INFO,JSON.stringify(action.payload))
+      return {...state,userInfo:action.payload,isLogining:false};
+      case LOGIN_FAIL:
+      return {...state,loginErrMsg:action.message,isLogining:false};
     default:
       return state;
   }

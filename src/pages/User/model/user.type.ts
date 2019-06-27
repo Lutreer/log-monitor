@@ -1,10 +1,15 @@
-export interface UserInterface {
+export interface IUser {
   id: string;
   avator: string;
-  username: string;
-  password: string;
+  userName: string;
+  token:string;
+  vmaToken:string;
 }
-
+export interface IUserStore {
+  userInfo:IUser;
+  isLogining:boolean;
+  loginErrMsg:string;
+}
 
 /**
  * action
@@ -22,7 +27,7 @@ export interface LoginActionInterface {
 
 export interface LoginSuccessActionInterface {
   type: LOGIN_SUCCESS;
-  payload: UserInterface;
+  payload: IUser;
 }
 export interface LoginFailActionInterface {
   type: LOGIN_FAIL;

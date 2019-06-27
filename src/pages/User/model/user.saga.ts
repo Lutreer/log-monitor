@@ -1,4 +1,4 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest, all } from 'redux-saga/effects';
 import {
   LoginActionInterface,
   LoginSuccessActionInterface,
@@ -10,24 +10,25 @@ import {
 import UserService from '../../../services/UserSevice';
 
 function* loginSage(action: LoginActionInterface) {
-  debugger
   let { payload } = action;
   let res = yield call(UserService.login, payload);
-  if (res.errorCode == 0) {
+  if (res.code == 200) {
     const loginSuccessAction: LoginSuccessActionInterface = {
       type: LOGIN_SUCCESS,
-      payload: res.data,
+      payload: {...res.data, vmaToken:payload.vmaToken},
     };
     yield put(loginSuccessAction);
   } else {
     let loginFailAction: LoginFailActionInterface = {
       type: LOGIN_FAIL,
-      message: res.message,
+      message: res.msg,
     };
     yield put(loginFailAction);
   }
 }
 
 export default function* sage() {
-  yield takeLatest(LOGIN, loginSage);
+  yield all([
+    takeLatest(LOGIN, loginSage)
+  ])
 }

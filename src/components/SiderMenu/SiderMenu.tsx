@@ -4,10 +4,11 @@ import style from './style/siderMenu.module.scss';
 import { MenuInterface, RouteInterface, isRoute } from '../../router/router';
 
 import { Layout, Menu, Icon } from 'antd';
+import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
 const { Header, Content, Footer, Sider } = Layout;
 const SubMenu = Menu.SubMenu;
 
-interface SiderPropsInterface {
+interface SiderPropsInterface extends RouteComponentProps<any> {
   title: string;
   menus: Array<MenuInterface | RouteInterface>;
   toggleCollapsed: Function;
@@ -17,7 +18,7 @@ interface SiderStateInterface {
   defaultSelectedKeys: Array<string>;
   defaultOpenKeys: Array<string>;
 }
-export default class SiderMenu extends Component<SiderPropsInterface, SiderStateInterface> {
+class SiderMenu extends Component<SiderPropsInterface, SiderStateInterface> {
   public state: SiderStateInterface;
 
   // 该成员为组件props设置默认值
@@ -32,7 +33,7 @@ export default class SiderMenu extends Component<SiderPropsInterface, SiderState
       defaultSelectedKeys: [],
       defaultOpenKeys: [],
     };
-    this.setDefaultSelectedAndOpenKeys(this.props.menus);
+    // this.setDefaultSelectedAndOpenKeys(this.props.menus);
   }
 
   private setDefaultSelectedAndOpenKeys(menus: Array<MenuInterface | RouteInterface>) {
@@ -50,12 +51,34 @@ export default class SiderMenu extends Component<SiderPropsInterface, SiderState
       }
     });
   }
+
+  // 路由跳转后自动高亮选中侧边导航栏
+  private setSelectedAndOpenKeysByRoute(menus: Array<MenuInterface | RouteInterface>, pathname:string) {
+    menus.forEach((el, index) => {
+      if (isRoute(el)) {
+        //一级路由匹配
+        if(el.path === pathname){
+          this.state.defaultSelectedKeys = [el.name]
+          return
+        }
+      } else if (!isRoute(el)) {
+        // 二级路由匹配
+        for(let i = 0; i < el.routes.length; i++){
+          if(el.routes[i].path === pathname){
+            this.state.defaultSelectedKeys = [el.routes[i].name]
+            this.state.defaultOpenKeys = [el.name];
+            return
+          }
+        }
+      }
+    });
+  }
   private toggleCollapsed() {
     this.props.toggleCollapsed()
   };
 
   render(): JSX.Element {
-    this
+    this.setSelectedAndOpenKeysByRoute(this.props.menus,this.props.location.pathname)
     return (
       <Sider
         collapsible
@@ -75,8 +98,7 @@ export default class SiderMenu extends Component<SiderPropsInterface, SiderState
           {this.props.menus.map((el, index) => {
             return isRoute(el) ? (
               <Menu.Item key={el.name}>
-                <Icon type={el.icon} />
-                <span>{el.name}</span>
+                <Link to={el.path}><Icon type={el.icon} />{el.name}</Link>
               </Menu.Item>
             ) : (
               <SubMenu
@@ -91,8 +113,7 @@ export default class SiderMenu extends Component<SiderPropsInterface, SiderState
                 {el.routes.map((route: RouteInterface, index) => {
                   return (
                     <Menu.Item key={route.name}>
-                      <Icon type={route.icon} />
-                      <span>{route.name}</span>
+                      <Link to={route.path}><Icon type={route.icon} />{route.name}</Link>
                     </Menu.Item>
                   );
                 })}
@@ -104,3 +125,4 @@ export default class SiderMenu extends Component<SiderPropsInterface, SiderState
     );
   }
 }
+export default withRouter(SiderMenu)

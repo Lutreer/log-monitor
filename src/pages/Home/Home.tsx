@@ -40,7 +40,7 @@ class Home extends Component<HomePropsInterface, HomeStateInterface> {
       <Layout style={{ minHeight: '100vh' }}>
         <SiderMenu
           menus={sider}
-          title="WM"
+          title="WMS"
           inlineCollapsed={siderMenuCollapsed}
           toggleCollapsed={this.siderMenuToggleCollapsed.bind(this)}
         />
