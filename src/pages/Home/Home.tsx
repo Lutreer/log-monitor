@@ -40,14 +40,19 @@ class Home extends Component<IHomeProps, IHomeState> {
   }
   private isLogin(){
     let userString = localStorage.getItem(CONST.LOCALSTORAGE_USER_INFO)
-    let token = localStorage.getItem(CONST.LOCALSTORAGE_USER_INFO)
+    let token = localStorage.getItem(CONST.TOKEN)
     let userInfo:IUser = userString && JSON.parse(userString)
-    if (token && userInfo && userInfo.avatar && userInfo.userName) {
-      this.props.setUserInfo(userInfo)
-    }else{
-      //缺一不可
-      this.props.history.push('/login')
+    
+    if(!this.props.userInfo.token || ! this.props.userInfo.avatar || !this.props.userInfo.userName){
+      // 将localstroge里的用户信息存进store
+      if (token && userInfo && userInfo.avatar && userInfo.userName) {
+        this.props.setUserInfo(userInfo)
+      }else{
+        //缺一不可
+        this.props.history.push('/login')
+      }
     }
+    
   }
   render() {
     // 在根组件里设置用户的信息，非登录页要争用户权限
