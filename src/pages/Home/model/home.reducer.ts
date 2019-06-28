@@ -1,11 +1,10 @@
-import { HomeStateInterface } from "../Home";
-import { ActionType } from "./home.type";
-let initState:HomeStateInterface = {
+import { ActionType, IHomeStore } from "./home.type";
+let initState:IHomeStore = {
   siderMenuCollapsed:false,
   navTabs:[]
 }
 
-export default function gameReducer(state: HomeStateInterface = initState, action: ActionType):HomeStateInterface {
+export default function gameReducer(state: IHomeStore = initState, action: ActionType):IHomeStore {
   switch (action.type) {
     case 'LOGOUT':
       return state;

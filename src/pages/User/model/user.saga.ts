@@ -1,25 +1,25 @@
 import { call, put, takeLatest, all } from 'redux-saga/effects';
 import {
-  LoginActionInterface,
-  LoginSuccessActionInterface,
+  ILoginAction,
+  ILoginSuccessAction,
   LOGIN_SUCCESS,
-  LoginFailActionInterface,
+  ILoginFailAction,
   LOGIN_FAIL,
   LOGIN,
 } from './user.type';
 import UserService from '../../../services/UserSevice';
 
-function* loginSage(action: LoginActionInterface) {
+function* loginSage(action: ILoginAction) {
   let { payload } = action;
   let res = yield call(UserService.login, payload);
   if (res.code == 200) {
-    const loginSuccessAction: LoginSuccessActionInterface = {
+    const loginSuccessAction: ILoginSuccessAction = {
       type: LOGIN_SUCCESS,
       payload: {...res.data, vmaToken:payload.vmaToken},
     };
     yield put(loginSuccessAction);
   } else {
-    let loginFailAction: LoginFailActionInterface = {
+    let loginFailAction: ILoginFailAction = {
       type: LOGIN_FAIL,
       message: res.msg,
     };

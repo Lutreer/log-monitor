@@ -1,15 +1,15 @@
-import { LoginActionInterface, LOGIN } from "./user.type";
+import { ILoginAction, LOGIN, IUser, SET_USER_INFO, ISetUserInfoAction, ILoginForm } from "./user.type";
 
-interface ILoginForm {
-    userName:string,
-    password:string,
-    vmaToken:string,
-
-}
 export default {
-    login(payload:ILoginForm):LoginActionInterface{
+    login(payload:ILoginForm):ILoginAction{
         return {
             type: LOGIN,
+            payload:payload
+        }
+    },
+    setUserInfo(payload:IUser):ISetUserInfoAction{
+        return {
+            type: SET_USER_INFO,
             payload:payload
         }
     }

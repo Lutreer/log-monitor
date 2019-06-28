@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import style from './style/login.module.scss';
 import { Form, Input, Icon, Button, Alert } from 'antd';
-import { FormComponentProps } from 'antd/lib/form';
-import { IUserStore, IUser } from './model/user.type';
+import { IUser, IUserStore, ILoginState, ILoginProps } from './model/user.type';
 import action from './model/user.action';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
@@ -10,15 +9,8 @@ import _ from 'lodash';
 import { Redirect } from 'react-router-dom';
 let { Item } = Form;
 
-export interface ILoginState {
-  rememberMe: boolean;
-}
-interface ILoginProps extends FormComponentProps {
-  login: Function;
-  isLogining: boolean;
-  loginErrMsg: string;
-  userInfo: IUser;
-}
+
+
 class Login extends Component<ILoginProps, ILoginState> {
   state: ILoginState;
   constructor(props: ILoginProps, state: ILoginState) {

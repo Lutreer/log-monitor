@@ -5,7 +5,7 @@ import SiderRouter from '../../router/Sider';
 
 import { sider } from '../../router/router';
 
-import { Layout, Menu, Icon, Breadcrumb, Dropdown } from 'antd';
+import { Layout } from 'antd';
 const { Header, Content, Footer, Sider } = Layout;
 
 import SiderMenu from '../../components/SiderMenu/SiderMenu';
@@ -15,27 +15,46 @@ import { connect } from 'react-redux';
 
 import { bindActionCreators, Dispatch } from 'redux';
 import action from './model/home.action';
+import userAction from '../User/model/user.action';
+import CONST from '../../assets/js/CONST';
+import { withRouter } from 'react-router-dom';
+import { IHomeProps, IHomeState, IHomeStore } from './model/home.type';
+import { IUser, IUserStore } from '../User/model/user.type';
 
-interface HomePropsInterface extends HomeStateInterface {
-  showSideMenu: Function;
-}
 
-export interface HomeStateInterface {
-  siderMenuCollapsed: boolean;
-  navTabs: Array<any>;
-}
 
-class Home extends Component<HomePropsInterface, HomeStateInterface> {
+class Home extends Component<IHomeProps, IHomeState> {
   public state: any;
-  constructor(props: HomePropsInterface) {
+  constructor(props: IHomeProps) {
     super(props);
   }
 
   siderMenuToggleCollapsed(isCollapsed: boolean) {
     this.props.showSideMenu();
   }
+
+  logout(){
+    localStorage.removeItem(CONST.LOCALSTORAGE_USER_INFO)
+    localStorage.removeItem(CONST.TOKEN)
+    this.props.history.push('/login')
+  }
+  private isLogin(){
+    let userString = localStorage.getItem(CONST.LOCALSTORAGE_USER_INFO)
+    let token = localStorage.getItem(CONST.LOCALSTORAGE_USER_INFO)
+    let userInfo:IUser = userString && JSON.parse(userString)
+    if (token && userInfo && userInfo.avatar && userInfo.userName) {
+      this.props.setUserInfo(userInfo)
+    }else{
+      //缺一不可
+      this.props.history.push('/login')
+    }
+  }
   render() {
-    const { siderMenuCollapsed, navTabs } = this.props;
+    // 在根组件里设置用户的信息，非登录页要争用户权限
+    if(this.props.location.pathname != '/login'){
+      this.isLogin()
+    }
+    const { siderMenuCollapsed, navTabs, userInfo } = this.props;
     return (
       <Layout style={{ minHeight: '100vh' }}>
         <SiderMenu
@@ -53,7 +72,7 @@ class Home extends Component<HomePropsInterface, HomeStateInterface> {
               borderBottom: '1px solid #f0f2f5',
             }}
           >
-            <GlobalHeader />
+            <GlobalHeader userInfo={userInfo} logout={this.logout.bind(this)}/>
           </Header>
           <NavTabs tabs={navTabs} />
           <Content style={{ margin: '4px 16px 0', overflow: 'initial' }}>
@@ -70,17 +89,26 @@ class Home extends Component<HomePropsInterface, HomeStateInterface> {
   }
 }
 
-const mapStateToProps = ({ home }: { [key: string]: HomeStateInterface }) => ({
-  siderMenuCollapsed: home.siderMenuCollapsed,
-  navTabs: home.navTabs,
-});
+const mapStateToProps = (store:any) => {
+  let home:IHomeStore = store.home
+  let user:IUserStore = store.user
+  return {
+    siderMenuCollapsed: store.home.siderMenuCollapsed,
+    navTabs: home.navTabs,
+    userInfo:user.userInfo,
+  }
+};
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   showSideMenu: bindActionCreators(action.sideMenuShowe, dispatch),
   addNavTab: bindActionCreators(action.addNavTab, dispatch),
+  setUserInfo: bindActionCreators(userAction.setUserInfo, dispatch),
 });
 
-export default connect(
+
+
+
+export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(Home);
+)(Home));
