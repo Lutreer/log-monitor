@@ -10,8 +10,6 @@ const { Header, Content, Footer, Sider } = Layout;
 
 
 import SiderMenu from '../../components/SiderMenu/SiderMenu';
-import NavTabs from '../../components/NavTabs/NavTabs';
-import GlobalHeader from '../../components/GlobalHeader/GlobalHeader';
 import { connect } from 'react-redux';
 
 import { bindActionCreators, Dispatch } from 'redux';

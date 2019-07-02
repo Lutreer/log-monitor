@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
-import { sider, MenuInterface, RouteInterface, isRoute } from './router';
+import { sider, IMenu, IRoute, isRoute } from './router';
 
 
 export default class Sider extends Component {
   private generateRoute():Array<JSX.Element>{
     let routeDom: Array<JSX.Element> = [];
-    sider.forEach((el:MenuInterface | RouteInterface, index_1) => {
+    sider.forEach((el:IMenu | IRoute, index_1) => {
       if(isRoute(el)){
-        let route:RouteInterface = el;
+        let route:IRoute = el;
         routeDom.push(
           <Route
             key={index_1}
@@ -25,8 +25,8 @@ export default class Sider extends Component {
         }
         
       }else{
-        let menu:MenuInterface = el;
-        menu.routes.forEach((route:RouteInterface, index_2:number) => {
+        let menu:IMenu = el;
+        menu.routes.forEach((route:IRoute, index_2:number) => {
           routeDom.push(
             <Route
               key={index_1 + '-' + index_2}

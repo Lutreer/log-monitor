@@ -1,7 +1,6 @@
 import { ActionType, IHomeStore } from "./home.type";
 let initState:IHomeStore = {
   siderMenuCollapsed:false,
-  navTabs:[]
 }
 
 export default function gameReducer(state: IHomeStore = initState, action: ActionType):IHomeStore {

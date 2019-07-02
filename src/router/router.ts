@@ -4,13 +4,13 @@ import Home from '../pages/Home/Home';
 import FormatIgeData from '../pages/Tool/FormatIgeData';
 import Analysis from '../pages/Dashboard/Analysis';
 import Game from '../pages/Game/Game';
-export interface MenuInterface {
+export interface IMenu {
   name: string;
   path: string;
   icon: string;
-  routes: Array<RouteInterface>;
+  routes: Array<IRoute>;
 }
-export interface RouteInterface {
+export interface IRoute {
   name: string;
   path: string;
   component: React.ComponentType;
@@ -21,12 +21,12 @@ export interface RouteInterface {
   authLogin?:boolean;
 }
 
-export function isRoute(route:RouteInterface | MenuInterface):route is RouteInterface{
-  return (<RouteInterface>route).component !== undefined
+export function isRoute(route:IRoute | IMenu):route is IRoute{
+  return (<IRoute>route).component !== undefined
 
 }
 
-export const index:Array<RouteInterface> = [
+export const index:Array<IRoute> = [
   {
     name: 'Login',
     path: '/login',
@@ -46,7 +46,7 @@ export const index:Array<RouteInterface> = [
     authLogin:true
   },
 ];
-export const sider: Array<MenuInterface | RouteInterface> = [
+export const sider: Array<IMenu | IRoute> = [
   {
     name: 'Dashboard',
     path: '/dashboard',
@@ -94,4 +94,4 @@ export const sider: Array<MenuInterface | RouteInterface> = [
   },
 ];
 
-export const top:Array<MenuInterface | RouteInterface> = [];
+export const top:Array<IMenu | IRoute> = [];

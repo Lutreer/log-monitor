@@ -1,5 +1,6 @@
 import { RouteComponentProps } from "react-router-dom";
 import { IUser } from "../../User/model/user.type";
+import { IRoute } from "../../../router/router";
 
 
 /**
@@ -9,7 +10,6 @@ export interface IHomeProps extends RouteComponentProps<any> {
   showSideMenu: Function;
   siderMenuCollapsed: boolean;
   addNavTab:Function;
-  navTabs: Array<any>;
   userInfo:IUser,
   setUserInfo:Function
 }
@@ -19,6 +19,9 @@ export interface IHomeProps extends RouteComponentProps<any> {
  * state
  */
 export interface IHomeState {
+  defaultSelectedKeys: Array<string>;
+  defaultOpenKeys: Array<string>;
+  navTabs:Array<IRoute>
 }
 
 /**
@@ -26,7 +29,6 @@ export interface IHomeState {
  */
 export interface IHomeStore{
   siderMenuCollapsed: boolean;
-  navTabs: Array<any>;
 }
 
 /**

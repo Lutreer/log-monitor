@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import style from './style/Home.module.scss';
 import SiderRouter from '../../router/Sider';
 
-import { sider } from '../../router/router';
+import { sider, isRoute, IMenu, IRoute } from '../../router/router';
 
 import { Layout } from 'antd';
 const { Header, Content, Footer, Sider } = Layout;
@@ -21,52 +21,105 @@ import { withRouter } from 'react-router-dom';
 import { IHomeProps, IHomeState, IHomeStore } from './model/home.type';
 import { IUser, IUserStore } from '../User/model/user.type';
 
-
-
 class Home extends Component<IHomeProps, IHomeState> {
-  public state: any;
+  public state: IHomeState;
   constructor(props: IHomeProps) {
     super(props);
+    this.state = {
+      defaultSelectedKeys: [],
+      defaultOpenKeys: [],
+      navTabs:[]
+    };
   }
 
   siderMenuToggleCollapsed(isCollapsed: boolean) {
     this.props.showSideMenu();
   }
 
-  logout(){
-    localStorage.removeItem(CONST.LOCALSTORAGE_USER_INFO)
-    localStorage.removeItem(CONST.TOKEN)
-    this.props.history.push('/login')
+  logout() {
+    localStorage.removeItem(CONST.LOCALSTORAGE_USER_INFO);
+    localStorage.removeItem(CONST.TOKEN);
+    this.props.history.push('/login');
   }
-  private isLogin(){
-    let userString = localStorage.getItem(CONST.LOCALSTORAGE_USER_INFO)
-    let token = localStorage.getItem(CONST.TOKEN)
-    let userInfo:IUser = userString && JSON.parse(userString)
-    
-    if(!this.props.userInfo.token || ! this.props.userInfo.avatar || !this.props.userInfo.userName){
+  private isLogin() {
+    let userString = localStorage.getItem(CONST.LOCALSTORAGE_USER_INFO);
+    let token = localStorage.getItem(CONST.TOKEN);
+    let userInfo: IUser = userString && JSON.parse(userString);
+
+    if (
+      !this.props.userInfo.token ||
+      !this.props.userInfo.avatar ||
+      !this.props.userInfo.userName
+    ) {
       // 将localstroge里的用户信息存进store
       if (token && userInfo && userInfo.avatar && userInfo.userName) {
-        this.props.setUserInfo(userInfo)
-      }else{
+        this.props.setUserInfo(userInfo);
+      } else {
         //缺一不可
-        this.props.history.push('/login')
+        this.props.history.push('/login');
       }
     }
-    
   }
+  // 路由跳转后自动高亮选中侧边导航栏
+  private setSelectedAndOpenKeysByRoute(menus: Array<IMenu | IRoute>, pathname: string) {
+    let defaultSelectedKeys:Array<string> = []
+    let defaultOpenKeys:Array<string> = []
+
+    menus.forEach((el, index) => {
+      if (isRoute(el)) {
+        //一级路由匹配
+        if (el.path === pathname) {
+          defaultSelectedKeys = [el.path]
+          return;
+        }
+      } else if (!isRoute(el)) {
+        // 二级路由匹配
+        for (let i = 0; i < el.routes.length; i++) {
+          if (el.routes[i].path === pathname) {
+            defaultSelectedKeys = [el.routes[i].path]
+            defaultOpenKeys = [el.name]
+            return;
+          }
+        }
+      }
+    });
+    this.state.defaultSelectedKeys = defaultSelectedKeys
+    this.state.defaultOpenKeys = defaultOpenKeys
+
+  }
+
+  public routeChange(route: IRoute) {
+    if (this.props.location.pathname === route.path) return;
+    let exist = this.state.navTabs.some(el => {
+      return el.path === route.path
+    })
+    !exist && this.state.navTabs.push(route)
+    debugger
+    this.setState({
+      defaultSelectedKeys:[route.path]
+    })
+    // this.state.defaultSelectedKeys = [route.path]
+    // this.setSelectedAndOpenKeysByRoute(sider, route.path);
+  }
+
   render() {
+    debugger
     // 在根组件里设置用户的信息，非登录页要争用户权限
-    if(this.props.location.pathname != '/login'){
-      this.isLogin()
+    if (this.props.location.pathname != '/login') {
+      this.isLogin();
     }
-    const { siderMenuCollapsed, navTabs, userInfo } = this.props;
+    this.setSelectedAndOpenKeysByRoute(sider, this.props.location.pathname);
+    const { siderMenuCollapsed, userInfo } = this.props;
     return (
       <Layout style={{ minHeight: '100vh' }}>
         <SiderMenu
           menus={sider}
+          defaultSelectedKeys={this.state.defaultSelectedKeys}
+          defaultOpenKeys={this.state.defaultOpenKeys}
           title={siderMenuCollapsed ? 'W' : 'WMS'}
           inlineCollapsed={siderMenuCollapsed}
-          toggleCollapsed={this.siderMenuToggleCollapsed.bind(this)}
+          onToggleCollapsed={this.siderMenuToggleCollapsed.bind(this)}
+          onLinkClick={this.routeChange.bind(this)}
         />
         <Layout style={siderMenuCollapsed ? { marginLeft: 80 } : { marginLeft: 200 }}>
           <Header
@@ -77,31 +130,28 @@ class Home extends Component<IHomeProps, IHomeState> {
               borderBottom: '1px solid #f0f2f5',
             }}
           >
-            <GlobalHeader userInfo={userInfo} logout={this.logout.bind(this)}/>
+            <GlobalHeader userInfo={userInfo} logout={this.logout.bind(this)} />
           </Header>
-          <NavTabs tabs={navTabs} />
+          <NavTabs tabs={this.state.navTabs} activePath={this.state.defaultSelectedKeys[0]} onTabClick={this.routeChange.bind(this)}/>
           <Content style={{ margin: '4px 16px 0', overflow: 'initial' }}>
             <div style={{ padding: 24, background: '#fff', textAlign: 'center' }}>
               <SiderRouter />
             </div>
           </Content>
-          <Footer style={{ textAlign: 'center' }}>
-            Ant Design ©2018 Created by Leasong{siderMenuCollapsed}
-          </Footer>
+          <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Leasong</Footer>
         </Layout>
       </Layout>
     );
   }
 }
 
-const mapStateToProps = (store:any) => {
-  let home:IHomeStore = store.home
-  let user:IUserStore = store.user
+const mapStateToProps = (store: any) => {
+  let home: IHomeStore = store.home;
+  let user: IUserStore = store.user;
   return {
     siderMenuCollapsed: store.home.siderMenuCollapsed,
-    navTabs: home.navTabs,
-    userInfo:user.userInfo,
-  }
+    userInfo: user.userInfo,
+  };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
@@ -110,10 +160,9 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   setUserInfo: bindActionCreators(userAction.setUserInfo, dispatch),
 });
 
-
-
-
-export default withRouter(connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Home));
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Home)
+);

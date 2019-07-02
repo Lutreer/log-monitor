@@ -1,84 +1,50 @@
 import React, { Component, PureComponent } from 'react';
 import style from './style/siderMenu.module.scss';
 
-import { MenuInterface, RouteInterface, isRoute } from '../../router/router';
+import { IMenu, IRoute, isRoute } from '../../router/router';
 
 import { Layout, Menu, Icon } from 'antd';
 import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
 const { Header, Content, Footer, Sider } = Layout;
 const SubMenu = Menu.SubMenu;
 
-interface SiderPropsInterface extends RouteComponentProps<any> {
+interface ISiderProps extends RouteComponentProps<any> {
   title: string;
-  menus: Array<MenuInterface | RouteInterface>;
-  toggleCollapsed: Function;
+  menus: Array<IMenu | IRoute>;
+  onToggleCollapsed: Function;
   inlineCollapsed: boolean;
-}
-interface SiderStateInterface {
   defaultSelectedKeys: Array<string>;
   defaultOpenKeys: Array<string>;
+  onLinkClick:Function
 }
-class SiderMenu extends Component<SiderPropsInterface, SiderStateInterface> {
-  public state: SiderStateInterface;
+interface ISiderState {
+  
+}
+class SiderMenu extends Component<ISiderProps, ISiderState> {
+  public state: ISiderState;
 
   // 该成员为组件props设置默认值
-  public static defaultProps: Partial<SiderPropsInterface> = {
+  public static defaultProps: Partial<ISiderProps> = {
     title: '',
     menus: [],
   };
 
-  constructor(props: SiderPropsInterface, state: SiderStateInterface) {
+  constructor(props: ISiderProps, state: ISiderState) {
     super(props);
     this.state = {
       defaultSelectedKeys: [],
       defaultOpenKeys: [],
     };
-    // this.setDefaultSelectedAndOpenKeys(this.props.menus);
-  }
-
-  private setDefaultSelectedAndOpenKeys(menus: Array<MenuInterface | RouteInterface>) {
-    menus.forEach((el, index) => {
-      if (isRoute(el) && el.default) {
-        let route = el as RouteInterface;
-        this.state.defaultOpenKeys = [...this.state.defaultOpenKeys, route.name];
-      } else if (!isRoute(el)) {
-        el.routes.map((route: RouteInterface, index) => {
-          if (route.default) {
-            this.state.defaultOpenKeys = [...this.state.defaultOpenKeys, el.name];
-            this.state.defaultSelectedKeys = [...this.state.defaultSelectedKeys, route.name];
-          }
-        });
-      }
-    });
-  }
-
-  // 路由跳转后自动高亮选中侧边导航栏
-  private setSelectedAndOpenKeysByRoute(menus: Array<MenuInterface | RouteInterface>, pathname:string) {
-    menus.forEach((el, index) => {
-      if (isRoute(el)) {
-        //一级路由匹配
-        if(el.path === pathname){
-          this.state.defaultSelectedKeys = [el.name]
-          return
-        }
-      } else if (!isRoute(el)) {
-        // 二级路由匹配
-        for(let i = 0; i < el.routes.length; i++){
-          if(el.routes[i].path === pathname){
-            this.state.defaultSelectedKeys = [el.routes[i].name]
-            this.state.defaultOpenKeys = [el.name];
-            return
-          }
-        }
-      }
-    });
   }
   private toggleCollapsed() {
-    this.props.toggleCollapsed()
+    this.props.onToggleCollapsed()
   };
 
-  render(): JSX.Element {
-    this.setSelectedAndOpenKeysByRoute(this.props.menus,this.props.location.pathname)
+  private linkClick(route:IRoute){
+    this.props.onLinkClick(route)
+  }
+
+  render() {
     return (
       <Sider
         collapsible
@@ -90,15 +56,15 @@ class SiderMenu extends Component<SiderPropsInterface, SiderStateInterface> {
         <Menu
           theme="dark"
           mode="inline"
-          defaultSelectedKeys={this.state.defaultSelectedKeys}
-          defaultOpenKeys={this.state.defaultOpenKeys}
+          defaultSelectedKeys={this.props.defaultSelectedKeys}
+          defaultOpenKeys={this.props.defaultOpenKeys}
           style={{ textAlign: 'left' }}
           inlineCollapsed={this.props.inlineCollapsed}
         >
           {this.props.menus.map((el, index) => {
             return isRoute(el) ? (
-              <Menu.Item key={el.name}>
-                <Link to={el.path}><Icon type={el.icon} />{el.name}</Link>
+              <Menu.Item key={el.path}>
+                <Link to={el.path} onClick={this.linkClick.bind(this,el)}><Icon type={el.icon}/>{el.name}</Link>
               </Menu.Item>
             ) : (
               <SubMenu
@@ -110,10 +76,10 @@ class SiderMenu extends Component<SiderPropsInterface, SiderStateInterface> {
                   </span>
                 }
               >
-                {el.routes.map((route: RouteInterface, index) => {
+                {el.routes.map((route: IRoute, index) => {
                   return (
-                    <Menu.Item key={route.name}>
-                      <Link to={route.path}><Icon type={route.icon} />{route.name}</Link>
+                    <Menu.Item key={route.path}>
+                      <Link to={route.path} onClick={this.linkClick.bind(this,route)}><Icon type={route.icon} />{route.name}</Link>
                     </Menu.Item>
                   );
                 })}

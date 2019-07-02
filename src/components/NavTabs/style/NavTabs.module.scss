@@ -48,12 +48,18 @@
             color: #121212;
         }
 
-        span{
+        a{
+            color: rgba(0, 0, 0, 0.65);
             margin-left: 4px;
             word-break:keep-all;/* 不换行 */ 
             white-space:nowrap;/* 不换行 */
             overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */
             text-overflow:ellipsis;/* 省略标记(...) ；需与overflow:hidden;一起使用。*/
+            text-decoration: none;
+
+            &:hover{
+                color: #121212;
+            }
         }
         i.close{
             font-size: 12px;
