@@ -45,21 +45,22 @@ class SiderMenu extends Component<ISiderProps, ISiderState> {
   }
 
   render() {
+    let {title, inlineCollapsed, defaultSelectedKeys, defaultOpenKeys} = this.props
     return (
       <Sider
         collapsible
-        collapsed={this.props.inlineCollapsed}
+        collapsed={inlineCollapsed}
         onCollapse={this.toggleCollapsed.bind(this)}
         className={style.sider}
       >
-        <div className={style.logo}>{this.props.title}</div>
+        <div className={style.logo}>{title}</div>
         <Menu
           theme="dark"
           mode="inline"
-          defaultSelectedKeys={this.props.defaultSelectedKeys}
-          defaultOpenKeys={this.props.defaultOpenKeys}
+          selectedKeys={defaultSelectedKeys}
+          defaultOpenKeys={defaultOpenKeys}
           style={{ textAlign: 'left' }}
-          inlineCollapsed={this.props.inlineCollapsed}
+          inlineCollapsed={inlineCollapsed}
         >
           {this.props.menus.map((el, index) => {
             return isRoute(el) ? (

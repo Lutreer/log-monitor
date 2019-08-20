@@ -12,7 +12,9 @@
     border-radius: 7px;
 }
 
-
+.ant-affix{
+    width: 100% !important;
+}
 .affix{
 
     padding: 5px 15px 8px 15px;
@@ -26,7 +28,7 @@
     
 
     .nav_item_active{
-        background-color: #f0f2f5 !important;
+        background-color: #f5f7f7 !important;
     }
     .nav_item{
         background-color: #fff;

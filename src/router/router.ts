@@ -4,6 +4,7 @@ import Home from '../pages/Home/Home';
 import FormatIgeData from '../pages/Tool/FormatIgeData';
 import Analysis from '../pages/Dashboard/Analysis';
 import Game from '../pages/Game/Game';
+import Report from '../pages/Report/Report';
 export interface IMenu {
   name: string;
   path: string;
@@ -71,6 +72,21 @@ export const sider: Array<IMenu | IRoute> = [
         name: 'Game List',
         path: '/game/list',
         component: Game,
+        icon: 'fund',
+        exact: true,
+        default: false,
+      },
+    ],
+  },
+  {
+    name: 'Report',
+    path: '/report',
+    icon: 'tool',
+    routes: [
+      {
+        name: 'Once Trial',
+        path: '/report/onceTial',
+        component: Report,
         icon: 'fund',
         exact: true,
         default: false,

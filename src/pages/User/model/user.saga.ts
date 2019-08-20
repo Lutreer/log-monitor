@@ -15,6 +15,7 @@ function* loginSage(action: ILoginAction) {
   if (res.code == 200) {
     const loginSuccessAction: ILoginSuccessAction = {
       type: LOGIN_SUCCESS,
+      // payload: {...res.data, vmaToken:payload.vmaToken},
       payload: {...res.data, vmaToken:payload.vmaToken},
     };
     yield put(loginSuccessAction);

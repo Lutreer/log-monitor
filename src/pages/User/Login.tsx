@@ -9,8 +9,6 @@ import _ from 'lodash';
 import { Redirect } from 'react-router-dom';
 let { Item } = Form;
 
-
-
 class Login extends Component<ILoginProps, ILoginState> {
   state: ILoginState;
   constructor(props: ILoginProps, state: ILoginState) {
@@ -25,7 +23,7 @@ class Login extends Component<ILoginProps, ILoginState> {
         this.props.login({
           userName: values.userName,
           password: values.password,
-          vmaToken: values.vmaToken,
+          // vmaToken: values.vmaToken,
         });
         console.log('Received values of form: ', values);
       }
@@ -34,16 +32,24 @@ class Login extends Component<ILoginProps, ILoginState> {
   render() {
     const { getFieldDecorator } = this.props.form;
     if (!_.isEmpty(this.props.userInfo.token)) {
-      return (<Redirect push to="/dashboard/analysis" />);
+      return <Redirect push to="/dashboard/analysis" />;
     }
     return (
       <div className={style.login}>
         <div className={style.form}>
-          <h1 className={style.title}>WMS</h1>
-          {!_.isEmpty(this.props.loginErrMsg) && <Alert className={style.errorAlert}  message={this.props.loginErrMsg} type="error" showIcon />}
+          <h1 className={style.title}>VSA</h1>
+          {!_.isEmpty(this.props.loginErrMsg) && (
+            <Alert
+              className={style.errorAlert}
+              message={this.props.loginErrMsg}
+              type="error"
+              showIcon
+            />
+          )}
           <Form onSubmit={this.handleSubmit}>
             <Item>
               {getFieldDecorator('userName', {
+                initialValue:"lixiang@altamob.com",
                 rules: [{ required: true, message: '账号不能为空!' }],
               })(
                 <Input
@@ -54,6 +60,7 @@ class Login extends Component<ILoginProps, ILoginState> {
             </Item>
             <Item>
               {getFieldDecorator('password', {
+                initialValue:"12345678",
                 rules: [{ required: true, message: '密码不能为空！' }],
               })(
                 <Input
@@ -63,7 +70,7 @@ class Login extends Component<ILoginProps, ILoginState> {
                 />
               )}
             </Item>
-            <Item>
+            {/* <Item>
               {getFieldDecorator('vmaToken', {
                 rules: [{ required: true, message: 'VMA TOKEN 不能为空!' }],
               })(
@@ -72,7 +79,7 @@ class Login extends Component<ILoginProps, ILoginState> {
                   placeholder="请输入VMA TOKEN"
                 />
               )}
-            </Item>
+            </Item> */}
           </Form>
           <Item>
             <Button

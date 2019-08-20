@@ -7,11 +7,15 @@ interface INavTabsProps {
   tabs: Array<IRoute>;
   activePath: string;
   onTabClick: Function;
+  onTabClose: Function;
 }
 
 export default class NavTabs extends Component<INavTabsProps, any> {
   private onTabClick(route: IRoute) {
     this.props.onTabClick(route);
+  }
+  private onTabClose(route: IRoute) {
+    this.props.onTabClose(route);
   }
 
   render() {
@@ -34,7 +38,7 @@ export default class NavTabs extends Component<INavTabsProps, any> {
                     <span onClick={this.onTabClick.bind(this, el)}>{el.name}</span>
                   </Link>
                 </Tooltip>
-                <Icon className={style.close} type="close" />
+                <Icon className={style.close} onClick={this.onTabClose.bind(this, el)} type="close" />
               </div>
             );
           })}

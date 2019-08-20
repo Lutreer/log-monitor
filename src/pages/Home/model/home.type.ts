@@ -9,9 +9,10 @@ import { IRoute } from "../../../router/router";
 export interface IHomeProps extends RouteComponentProps<any> {
   showSideMenu: Function;
   siderMenuCollapsed: boolean;
-  addNavTab:Function;
-  userInfo:IUser,
-  setUserInfo:Function
+  userInfo:IUser;
+  setUserInfo:Function;
+  loading:boolean;
+  
 }
 
 
@@ -29,20 +30,46 @@ export interface IHomeState {
  */
 export interface IHomeStore{
   siderMenuCollapsed: boolean;
+  loading:boolean;
 }
 
 /**
  * action
  */
+
+export const SHOW_SIDE_MENU = 'SHOW_SIDE_MENU';
+export type SHOW_SIDE_MENU = typeof SHOW_SIDE_MENU;
+export const SHOW_LOADING = 'SHOW_LOADING';
+export type SHOW_LOADING = typeof SHOW_LOADING;
+
+export const ERROR_MESSAGE = 'ERROR_MESSAGE';
+export type ERROR_MESSAGE = typeof ERROR_MESSAGE;
+export const WARN_MESSAGE = 'WARN_MESSAGE';
+export type WARN_MESSAGE = typeof WARN_MESSAGE;
+export const INFO_MESSAGE = 'INFO_MESSAGE';
+export type INFO_MESSAGE = typeof INFO_MESSAGE;
+
+export const LOGOUT = 'LOGOUT';
+export type LOGOUT = typeof LOGOUT;
 export interface ISideMenuShoweAction {
-  type: 'SHOW_SIDE_MENU';
+  type: SHOW_SIDE_MENU;
+}
+export interface IShowLoadingAction {
+  type: SHOW_LOADING;
+  data:boolean
 }
 export interface ILogoutAction {
-  type: 'LOGOUT';
+  type: LOGOUT;
   payload: any;
+}
+export interface IMessageAction {
+  type: ERROR_MESSAGE | WARN_MESSAGE | INFO_MESSAGE;
+  data: string;
 }
 
 export type ActionType =
   | ILogoutAction
   | ISideMenuShoweAction
+  | IShowLoadingAction
+  | IMessageAction
 
