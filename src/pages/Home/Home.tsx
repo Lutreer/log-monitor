@@ -25,12 +25,15 @@ class Home extends Component<IHomeProps, IHomeState> {
   public state: IHomeState;
   constructor(props: IHomeProps) {
     super(props);
-    
-    let {defaultSelectedKeys, defaultOpenKeys, navTabs} = this.setSelectedAndOpenKeysByRoute(sider, this.props.location.pathname);
+
+    let { defaultSelectedKeys, defaultOpenKeys, navTabs } = this.setSelectedAndOpenKeysByRoute(
+      sider,
+      this.props.location.pathname
+    );
     this.state = {
       defaultSelectedKeys: defaultSelectedKeys,
       defaultOpenKeys: defaultOpenKeys,
-      navTabs:navTabs
+      navTabs: navTabs,
     };
   }
 
@@ -64,58 +67,56 @@ class Home extends Component<IHomeProps, IHomeState> {
   }
   // 路由跳转后自动高亮选中侧边导航栏
   private setSelectedAndOpenKeysByRoute(menus: Array<IMenu | IRoute>, pathname: string) {
-    let defaultSelectedKeys:Array<string> = []
-    let defaultOpenKeys:Array<string> = []
-    let navTabs:Array<IRoute> = []
+    let defaultSelectedKeys: Array<string> = [];
+    let defaultOpenKeys: Array<string> = [];
+    let navTabs: Array<IRoute> = [];
 
     menus.forEach((el, index) => {
       if (isRoute(el)) {
         //一级路由匹配
         if (el.path === pathname) {
-          defaultSelectedKeys = [el.path]
-          navTabs.push(el)
+          defaultSelectedKeys = [el.path];
+          navTabs.push(el);
           return;
         }
       } else if (!isRoute(el)) {
         // 二级路由匹配
         for (let i = 0; i < el.routes.length; i++) {
           if (el.routes[i].path === pathname) {
-            defaultSelectedKeys = [el.routes[i].path]
-            defaultOpenKeys = [el.name]
-            navTabs.push(el.routes[i])
+            defaultSelectedKeys = [el.routes[i].path];
+            defaultOpenKeys = [el.name];
+            navTabs.push(el.routes[i]);
             return;
           }
         }
       }
     });
     return {
-      defaultSelectedKeys:defaultSelectedKeys,
-      defaultOpenKeys:defaultOpenKeys,
-      navTabs:navTabs
-    }
+      defaultSelectedKeys: defaultSelectedKeys,
+      defaultOpenKeys: defaultOpenKeys,
+      navTabs: navTabs,
+    };
   }
-  private tabClose(route: IRoute) {
-    
-  }
+  private tabClose(route: IRoute) {}
 
   private routeChange(route: IRoute) {
     if (this.state.defaultSelectedKeys[0] === route.path) return;
     let exist = this.state.navTabs.some(el => {
-      return el.path === route.path
-    })
-    !exist && this.state.navTabs.push(route)
-    console.warn("====",exist)
-    let keys = []
-    keys.push(route.path)
+      return el.path === route.path;
+    });
+    !exist && this.state.navTabs.push(route);
+    console.warn('====', exist);
+    let keys = [];
+    keys.push(route.path);
     this.setState({
-      defaultSelectedKeys:keys
-    })
+      defaultSelectedKeys: keys,
+    });
   }
 
   render() {
     // 在根组件里设置用户的信息，非登录页要争用户权限
     if (this.props.location.pathname != '/login') {
-      this.isLogin();
+      // this.isLogin();
     }
     const { siderMenuCollapsed, userInfo } = this.props;
     return (
@@ -124,7 +125,7 @@ class Home extends Component<IHomeProps, IHomeState> {
           menus={sider}
           defaultSelectedKeys={this.state.defaultSelectedKeys}
           defaultOpenKeys={this.state.defaultOpenKeys}
-          title={siderMenuCollapsed ? 'V' : 'VSA'}
+          title={siderMenuCollapsed ? 'W' : 'WSA'}
           inlineCollapsed={siderMenuCollapsed}
           onToggleCollapsed={this.siderMenuToggleCollapsed.bind(this)}
           onLinkClick={this.routeChange.bind(this)}
@@ -141,15 +142,13 @@ class Home extends Component<IHomeProps, IHomeState> {
             <GlobalHeader userInfo={userInfo} logout={this.logout.bind(this)} />
           </Header>
           {/* <NavTabs tabs={this.state.navTabs} activePath={this.state.defaultSelectedKeys[0]} onTabClose={this.tabClose.bind(this)} onTabClick={this.routeChange.bind(this)}/> */}
-          
+
           <Content style={{ margin: '4px 0px 0', overflow: 'initial' }}>
-          
-            <div style={{ padding: 16, background: '#fff',minHeight:'100%'}}>
-            <Spin spinning={this.props.loading}>
-              <SiderRouter />
+            <div style={{ padding: 16, background: '#fff', minHeight: '100%' }}>
+              <Spin spinning={this.props.loading}>
+                <SiderRouter />
               </Spin>
             </div>
-            
           </Content>
           {/* <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Leasong {this.state.defaultSelectedKeys[0]}</Footer> */}
         </Layout>
@@ -164,7 +163,7 @@ const mapStateToProps = (store: any) => {
   return {
     siderMenuCollapsed: store.home.siderMenuCollapsed,
     userInfo: user.userInfo,
-    loading:home.loading
+    loading: home.loading,
   };
 };
 

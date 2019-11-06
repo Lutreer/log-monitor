@@ -1,11 +1,11 @@
-const SERVER:{[key:string]:any} = {
+const SERVER: { [key: string]: any } = {
   DEVELOPMENT: {
     VMA: 'http://test.vm.admin.synative.com',
-    MAIN: 'http://10.200.14.188:3333',
+    MAIN: 'http://10.200.14.223:3333',
   },
   TEST: {
     VMA: 'http://test.vm.admin.synative.com',
-    MAIN: 'http://10.200.14.188:3333',
+    MAIN: 'http://10.200.14.223:3333',
   },
   PRODUCTION: {
     VMA: 'http://test.vm.admin.synative.com',
@@ -13,7 +13,7 @@ const SERVER:{[key:string]:any} = {
   },
 };
 
-const CONST:any = {
+const CONST: any = {
   SERVER: {},
   API: {
     LOGIN: '/api/user/login',
@@ -25,6 +25,6 @@ const CONST:any = {
   TOKEN: 'TOKEN',
   LOCALSTORAGE_USER_INFO: 'LOCALSTORAGE_USER_INFO',
 };
-const env = process.env.NODE_ENV.toLocaleUpperCase()
-CONST.SERVER = SERVER[env]
+const env = process.env.NODE_ENV.toLocaleUpperCase();
+CONST.SERVER = SERVER[env];
 export default CONST;
