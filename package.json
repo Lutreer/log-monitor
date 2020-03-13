@@ -121,8 +121,8 @@
       "node"
     ],
     "watchPlugins": [
-      "/Users/leasong/Desktop/antd-demo-ts/node_modules/jest-watch-typeahead/filename.js",
-      "/Users/leasong/Desktop/antd-demo-ts/node_modules/jest-watch-typeahead/testname.js"
+      "/Users/xxx/Desktop/antd-demo-ts/node_modules/jest-watch-typeahead/filename.js",
+      "/Users/xxx/Desktop/antd-demo-ts/node_modules/jest-watch-typeahead/testname.js"
     ]
   },
   "devDependencies": {
